@@ -15,7 +15,7 @@
 const { AgentExecutor, RequestContext, ExecutionEventBus, A2AError} = require('@a2a-js/sdk/server');
 const { try_activate_a2ui_extension, create_a2ui_part } = require('./a2ui_extension');
 const { v4 } = require('uuid');
-const RestaurantAgent = require('./agent');
+const RestaurantAgent = require('./agent_openai');
 
 /**
  * Restaurant AgentExecutor Example.
