@@ -49,18 +49,25 @@ async function main(options = {}) {
   const { host = 'localhost', port = 10002 } = options;
   
   try {
-    // Check for appropriate API key based on the selected model
-    const model = process.env.LITELLM_MODEL || 'gemini/gemini-2.5-flash';
+    // Check for appropriate API key, model, and base URL combinations
     if (process.env.GOOGLE_GENAI_USE_VERTEXAI !== 'TRUE') {
-      if (model.toLowerCase().includes('gemini') && !process.env.GEMINI_API_KEY) {
+      // 检查是否有完整的环境变量组合
+      const hasDashscopeCombination = !!(process.env.DASHSCOPE_API_KEY && process.env.DASHSCOPE_MODEL && process.env.DASHSCOPE_BASE_URL);
+      const hasOpenrouterCombination = !!(process.env.OPENROUTER_API_KEY && process.env.OPENROUTER_MODEL && process.env.OPENROUTER_BASE_URL);
+      const hasGeminiCombination = !!(process.env.GEMINI_API_KEY && process.env.GEMINI_MODEL && process.env.GEMINI_BASE_URL);
+      
+      // 如果没有任何一个完整组合被设置，抛出错误
+      if (!hasDashscopeCombination && !hasOpenrouterCombination && !hasGeminiCombination) {
         throw new MissingAPIKeyError(
-          'GEMINI_API_KEY environment variable not set for Gemini model.'
-        );
-      } else if (model.toLowerCase().includes('dashscope') && !process.env.DASHSCOPE_API_KEY) {
-        throw new MissingAPIKeyError(
-          'DASHSCOPE_API_KEY environment variable not set for Qwen model.'
+          'Missing complete API configuration. Please set one of the following combinations:\n' +
+          '1. DASHSCOPE_API_KEY, DASHSCOPE_MODEL, DASHSCOPE_BASE_URL\n' +
+          '2. OPENROUTER_API_KEY, OPENROUTER_MODEL, OPENROUTER_BASE_URL\n' +
+          '3. GEMINI_API_KEY, GEMINI_MODEL, GEMINI_BASE_URL'
         );
       }
+      
+      // 确定使用的模型
+      const model = process.env.DASHSCOPE_MODEL || process.env.OPENROUTER_MODEL || process.env.GEMINI_MODEL || process.env.LITELLM_MODEL || 'gemini/gemini-2.5-flash';
     }
 
     // Create capabilities
