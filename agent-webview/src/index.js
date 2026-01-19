@@ -232,3 +232,9 @@ export {
     agentMessageBus,
     A2UI_EXTENSION_URL
 };
+
+// 导出 A2A SDK 浏览器适配层
+export * from './a2a-sdk-browser/index.js';
+
+// 导出测试工具
+export * from './testing/index.js';

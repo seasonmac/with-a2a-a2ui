@@ -9,6 +9,7 @@
 - ✅ 语义化 Native Bridge API（`sendUserMessage`、`emitAgentEvent` 等）
 - ✅ WebView 跨域配置（无需 API 代理）
 - ✅ 单文件打包输出
+- ✅ **浏览器测试支持**（Mock LLM + DevTools Helper）
 
 ## 目录结构
 
@@ -19,8 +20,14 @@ agent-webview/
 │   ├── a2a-sdk-browser/            # A2A SDK 浏览器适配层
 │   │   ├── index.js                # SDK 入口
 │   │   ├── request-handler.js      # 请求处理器
-│   │   ├── task-store.js           # 任务存储（内存版本）
+│   │   ├── task-store.js           # 任务存储（与 @a2a-js/sdk 接口兼容）
+│   │   ├── execution-event-bus.js  # 执行事件总线
+│   │   ├── request-context.js      # 请求上下文类
 │   │   └── native-transport.js     # Native Bridge 传输层
+│   ├── testing/                    # 浏览器测试工具
+│   │   ├── index.js                # 测试模块入口
+│   │   ├── mock-llm.js             # Mock LLM 响应
+│   │   └── devtools-helper.js      # Chrome DevTools 测试助手
 │   ├── agent-executor.js           # Agent 执行器
 │   ├── agent.js                    # Agent 核心逻辑
 │   ├── tools.js                    # 工具函数（无 fs 依赖）
@@ -30,11 +37,83 @@ agent-webview/
 │   ├── config.js                   # 配置管理
 │   └── native-bridge.js            # Native 通信桥（语义化 API）
 ├── dist/                           # 打包输出
-├── demo.html                       # 浏览器演示页面
+├── test.html                       # 完整浏览器测试页面
+├── demo.html                       # 简单演示页面
 ├── package.json
 ├── rollup.config.js
 └── README.md
 ```
+
+## 🧪 浏览器测试（无需 API Key）
+
+### 方法 1: 使用测试页面
+
+1. 启动本地服务器：
+```bash
+cd agent-webview
+npx serve .
+```
+
+2. 打开浏览器访问 `http://localhost:3000/test.html`
+
+3. 点击 **"🎭 Mock 模式初始化"** 按钮
+
+4. 在输入框中输入消息，如 "帮我找中餐厅"
+
+### 方法 2: 使用 Chrome DevTools
+
+1. 打开测试页面后，按 **F12** 打开开发者工具
+
+2. 在 Console 中输入：
+
+```javascript
+// 查看帮助
+DevTools.help()
+
+// 初始化 Mock 模式
+await DevTools.initMock()
+
+// 发送消息
+await DevTools.send("Find Chinese restaurants")
+
+// 模拟预订
+await DevTools.book("Golden Dragon")
+
+// 提交预订表单
+await DevTools.submitBooking({
+  restaurantName: "Golden Dragon",
+  partySize: "4",
+  reservationTime: "7:00 PM",
+  dietary: "No shellfish"
+})
+
+// 查看状态
+DevTools.status()
+
+// 查看消息历史
+DevTools.history()
+
+// 查看事件历史
+DevTools.events()
+```
+
+### DevTools 命令一览
+
+| 命令 | 说明 |
+|------|------|
+| `DevTools.help()` | 显示帮助信息 |
+| `DevTools.init(config?)` | 初始化 Agent |
+| `DevTools.initMock()` | Mock 模式初始化（无需 API Key）|
+| `DevTools.send(text)` | 发送文本消息 |
+| `DevTools.sendRaw(message)` | 发送原始 A2A 消息 |
+| `DevTools.book(name)` | 模拟点击预订 |
+| `DevTools.submitBooking(details)` | 提交预订表单 |
+| `DevTools.status()` | 查看 Agent 状态 |
+| `DevTools.history()` | 查看消息历史 |
+| `DevTools.events()` | 查看事件历史 |
+| `DevTools.card()` | 查看 Agent Card |
+| `DevTools.mockRestaurants()` | 查看模拟餐厅数据 |
+| `DevTools.clear()` | 清空历史记录 |
 
 ## Native Bridge API
 
@@ -47,6 +126,21 @@ agent-webview/
 | `agentMessageBus.notifyAgentReady(card)` | WebView → Native | Agent 就绪通知 |
 | `agentMessageBus.emitAgentEvent(event)` | WebView → Native | 发送 Agent 事件 |
 | `agentMessageBus.emitAgentError(error)` | WebView → Native | 发送错误信息 |
+
+## A2A SDK 接口兼容性
+
+`a2a-sdk-browser/` 模块导出的接口与 `@a2a-js/sdk/server` 保持兼容：
+
+| 接口 | @a2a-js/sdk | agent-webview |
+|------|-------------|---------------|
+| `InMemoryTaskStore.load(taskId)` | ✅ | ✅ |
+| `InMemoryTaskStore.save(task)` | ✅ | ✅ |
+| `DefaultExecutionEventBus.publish(event)` | ✅ | ✅ |
+| `DefaultExecutionEventBus.on(name, listener)` | ✅ | ✅ |
+| `DefaultExecutionEventBus.off(name, listener)` | ✅ | ✅ |
+| `DefaultExecutionEventBus.once(name, listener)` | ✅ | ✅ |
+| `DefaultExecutionEventBus.finished()` | ✅ | ✅ |
+| `RequestContext` | ✅ | ✅ |
 
 ## 快速开始
 
