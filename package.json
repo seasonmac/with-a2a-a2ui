@@ -19,7 +19,9 @@
     "postinstall": "npm run install:agent"
   },
   "dependencies": {
-    "@a2a-js/sdk": "^0.3.8",
+    "@a2a-js/sdk": "^0.3.7",
+    "@google/adk": "^0.2.2",
+    "@google/genai": "^1.35.0",
     "@a2ui/lit": "^0.8.1",
     "@ag-ui/a2a": "^0.00.6",
     "@copilotkit/a2ui-renderer": "^1.51.2",
