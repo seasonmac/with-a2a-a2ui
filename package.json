@@ -9,6 +9,7 @@
     "dev:debug": "LOG_LEVEL=debug npm run dev",
     "dev:agent": "./scripts/run-agent.sh || scripts/run-agent.bat",
     "dev:agent-ts": "./scripts/run-agent-ts.sh || scripts/run-agent-ts.bat",
+    "dev:agent-js": "./scripts/run-agent-js.sh || scripts/run-agent-js.bat",
     "dev:ui": "next dev --turbopack",
     "build": "next build",
     "build:agent-ts": "cd agent-ts && npm run build",
@@ -33,6 +34,7 @@
     "pnpm": "^10.28.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
+    "shiki": "^3.21.0",
     "uv": "^1.4.0",
     "zod": "^4.3.5"
   },
