@@ -146,3 +146,7 @@ next-env.d.ts
 .idea/
 .vscode/
 agent/.idea/
+
+*pnpm-lock.yaml
+agent-js/pnpm-lock.yaml
+*uv.lock
