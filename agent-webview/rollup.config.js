@@ -23,7 +23,8 @@ export default [
             format: 'iife',
             name: 'AgentWebView',
             sourcemap: true,
-            inlineDynamicImports: true  // 将动态导入内联到主 bundle
+            inlineDynamicImports: true,  // 将动态导入内联到主 bundle
+            exports: 'default'  // 只导出默认导出，使 window.AgentWebView 直接是实例
         },
         plugins
     },
