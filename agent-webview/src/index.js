@@ -219,14 +219,13 @@ class AgentWebViewInstance {
 // 创建全局实例
 const agentWebView = new AgentWebViewInstance();
 
-// 暴露到全局对象
-if (typeof window !== 'undefined') {
-    window.AgentWebView = agentWebView;
-}
+// 导出供模块化使用和 IIFE 格式
+// 注意：在 IIFE 格式下，这个 default export 会被 Rollup 赋值给 window.AgentWebView
+export default agentWebView;
 
-// 导出供模块化使用
-export { 
-    agentWebView as default,
+// 命名导出
+export {
+    agentWebView,
     AgentWebViewInstance,
     configManager,
     agentMessageBus,

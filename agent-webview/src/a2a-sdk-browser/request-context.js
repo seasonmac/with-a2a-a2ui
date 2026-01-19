@@ -21,7 +21,8 @@ export class RequestContext {
      * @param {Object} [task] - 可选的现有任务
      * @param {Array} [referenceTasks] - 可选的参考任务列表
      * @param {Object} [context] - 可选的服务调用上下文
-     */
+     
+    
     constructor(userMessage, taskId, contextId, task, referenceTasks, context) {
         this.userMessage = userMessage;
         this.taskId = taskId;
