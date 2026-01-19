@@ -1,7 +1,7 @@
 import {
   type AgentExecutor,
   type ExecutionEventBus,
-  RequestContext as A2ARequestContext,
+  RequestContext,
   DefaultRequestHandler,
   InMemoryTaskStore,
   JsonRpcTransportHandler,
@@ -31,36 +31,11 @@ class A2AAgentExecutor implements AgentExecutor {
     this.textAgent = new RestaurantAgent(baseUrl, false);
   }
 
-  async execute(requestContext: A2ARequestContext, eventBus: ExecutionEventBus): Promise<void> {
+  async execute(requestContext: RequestContext, eventBus: ExecutionEventBus): Promise<void> {
     try {
       const userMessage = requestContext.userMessage;
-      const task = requestContext.task;
-      
-      // Extract extensions from task or message metadata
-      const requestedExtensions: string[] = [];
-      if (task?.metadata?.extensions) {
-        requestedExtensions.push(...(task.metadata.extensions as string[]));
-      }
-
-      // Build context for extension check
-      const extensionContext = {
-        message: {
-          parts: userMessage.parts?.map(p => ({
-            type: (p.kind === 'text' ? 'text' : 'data') as 'text' | 'data',
-            text: p.kind === 'text' ? p.text : undefined,
-            data: p.kind === 'data' ? p.data : undefined,
-          })) || [],
-        },
-        current_task: task ? {
-          id: task.id,
-          context_id: task.contextId,
-          state: task.status.state,
-        } : null,
-        requested_extensions: requestedExtensions,
-      };
-
-       logger.info(`--- Client requested extensions: ${JSON.stringify(requestedExtensions)} ---`);
-      const useUI = tryActivateA2UIExtension(extensionContext);
+      logger.info(`--- Client requested extensions: ${requestContext.context?.requestedExtensions || []} ---`);
+      const useUI = tryActivateA2UIExtension(requestContext);
 
       const agent = useUI ? this.uiAgent : this.textAgent;
       logger.info(`--- AGENT_EXECUTOR: ${useUI ? 'A2UI extension is active. Using UI agent.' : 'A2UI extension is not active. Using text agent.'} ---`);
@@ -82,6 +57,12 @@ class A2AAgentExecutor implements AgentExecutor {
           logger.info(`Received a2ui ClientEvent: ${JSON.stringify(uiEvent)}`);
           action = uiEvent.actionName;
           query = buildQueryFromUIEvent(uiEvent);
+        } else {
+          // Extract text from all text parts
+          query = requestContext.userMessage.parts
+                .filter(part => part.kind === 'text')
+                .map(part => part.text)
+                .join(' ');
         }
       }
 

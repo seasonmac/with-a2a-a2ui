@@ -1,17 +1,15 @@
-import type { A2UIExtension, RequestContext, UIEventAction } from './types.js';
+import { RequestContext } from '@a2a-js/sdk/server';
+import type {UIEventAction } from './types.js';
+import { AgentExtension } from '@a2a-js/sdk';
 
-const A2UI_EXTENSION_URI = 'tag:copilotkit.ai,2025:a2ui';
+const A2UI_EXTENSION_URI = 'https://a2ui.org/a2a-extension/a2ui/v0.8';
 
 /**
  * Get the A2UI agent extension definition
  */
-export function getA2UIAgentExtension(): A2UIExtension {
+export function getA2UIAgentExtension(): AgentExtension {
   return {
     uri: A2UI_EXTENSION_URI,
-    description: 'Agent-to-UI extension for rich UI responses',
-    requiredInputFields: [],
-    optionalInputFields: [],
-    outputFields: [],
   };
 }
 
@@ -20,7 +18,7 @@ export function getA2UIAgentExtension(): A2UIExtension {
  * @returns true if A2UI extension should be used
  */
 export function tryActivateA2UIExtension(context: RequestContext): boolean {
-  const extensions = context.requested_extensions || [];
+  const extensions = context.context?.requestedExtensions || [];
   return extensions.some(ext => ext.includes('a2ui') || ext.includes(A2UI_EXTENSION_URI));
 }
 

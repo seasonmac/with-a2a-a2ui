@@ -89,16 +89,13 @@ def main(host, port):
 
         app.add_middleware(
             CORSMiddleware,
-            allow_origins=["http://localhost:5173"],
+            allow_origin_regex=r"http://localhost:\d+",
             allow_credentials=True,
             allow_methods=["*"],
             allow_headers=["*"],
         )
 
-        # Use absolute path based on this script's location
-        script_dir = os.path.dirname(os.path.abspath(__file__))
-        images_dir = os.path.join(script_dir, "images")
-        app.mount("/static", StaticFiles(directory=images_dir), name="static")
+        app.mount("/static", StaticFiles(directory="images"), name="static")
 
         uvicorn.run(app, host=host, port=port)
     except MissingAPIKeyError as e:

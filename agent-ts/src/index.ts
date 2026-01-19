@@ -11,6 +11,8 @@ import { logger } from './logger.js';
 import { SERVER_CONFIG, hasLLMProvider, getLLMConfigErrorMessage, baseUrl } from './config.js';
 import { agentCard } from './agentcard.js';
 import { jsonRpcHandler } from './agent-executor.js';
+import { ServerCallContext, UnauthenticatedUser } from '@a2a-js/sdk/server';
+import { Extensions, HTTP_EXTENSION_HEADER } from '@a2a-js/sdk';
 
 // Load environment variables (simple implementation for Node.js)
 function loadEnv(): void {
@@ -94,8 +96,12 @@ async function main(): Promise<void> {
     try {
       const body = await c.req.json();
       logger.info(`Received request: ${JSON.stringify(body).substring(0, 500)}`);
+      const context = new ServerCallContext(
+        Extensions.parseServiceParameter(c.req.header(HTTP_EXTENSION_HEADER)),
+        new UnauthenticatedUser()
+      );
 
-      const result = await jsonRpcHandler.handle(body);
+      const result = await jsonRpcHandler.handle(body, context);
       const requestId = body.id;
 
       // Check if result is an async generator (streaming)

@@ -24,4 +24,5 @@ skills: [
     examples: ['Find me the top 10 chinese restaurants in the US'],
     },
 ],
+protocolVersion: '1.0.0',
 };

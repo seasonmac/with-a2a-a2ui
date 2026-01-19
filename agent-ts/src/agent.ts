@@ -5,6 +5,8 @@ import { toolDefinitions, executeTool } from './tools.js';
 import { logger } from './logger.js';
 import { getActiveLLMProvider, getModelName } from './config.js';
 import type { StreamResult, ToolContext } from './types.js';
+import {LLM_CONFIG} from './config.js';
+
 
 const ajv = new Ajv({ allErrors: true, strict: false });
 
@@ -41,8 +43,8 @@ export class RestaurantAgent {
     }
     
     const openaiConfig: ConstructorParameters<typeof OpenAI>[0] = {
-      apiKey: provider.apiKey,
-      baseURL: provider.baseUrl,
+      apiKey: LLM_CONFIG.openrouter.apiKey,
+      baseURL: LLM_CONFIG.openrouter.baseURL,
     };
 
     // Add provider-specific headers if available
@@ -96,9 +98,9 @@ export class RestaurantAgent {
         // Yield processing message
         yield { is_task_complete: false, updates: this.getProcessingMessage() };
 
-        // Call OpenAI API
+        // // Call OpenAI API
         let response = await this.openai.chat.completions.create({
-          model: this.model,
+          model: LLM_CONFIG.openrouter.model,
           messages: session.messages,
           tools: toolDefinitions,
           tool_choice: 'auto',
@@ -129,7 +131,7 @@ export class RestaurantAgent {
 
           // Get next response after tool execution
           response = await this.openai.chat.completions.create({
-            model: this.model,
+            model: LLM_CONFIG.openrouter.model,
             messages: session.messages,
             tools: toolDefinitions,
             tool_choice: 'auto',

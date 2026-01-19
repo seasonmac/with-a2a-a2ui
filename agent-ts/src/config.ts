@@ -7,10 +7,13 @@ const HOST:string = 'localhost';
 const PORT:string = '10002';
 const LOG_LEVEL:string = 'info';
 
-const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
-const OPENROUTER_MODEL = 'gemini-2.5-flash';
-const OPENROUTER_APP_NAME = 'A2UI Restaurant Agent';
-const OPENROUTER_REFERER = 'A2UI.org';
+class OpenRouterConfig {
+  static readonly BASE_URL = 'https://openrouter.ai/api/v1';
+  static readonly API_KEY = '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';
+  static readonly MODEL = 'z-ai/glm-4.5-air:free';
+  static readonly APP_NAME = 'A2UI Restaurant Agent';
+  static readonly REFERER = 'A2UI.org';
+};
 
 const OPENAI_API_KEY = '';
 const OPENAI_BASE_URL = 'https://api.openai.com/v1';
@@ -36,10 +39,11 @@ export const LOG_CONFIG = {
 export const LLM_CONFIG = {
   // OpenRouter
   openrouter: {
-    apiKey: OPENROUTER_API_KEY,
-    model: OPENROUTER_MODEL,
-    appName: OPENROUTER_APP_NAME,
-    referer: OPENROUTER_REFERER,
+    apiKey: OpenRouterConfig.API_KEY,
+    baseURL: OpenRouterConfig.BASE_URL,
+    model: OpenRouterConfig.MODEL,
+    appName: OpenRouterConfig.APP_NAME,
+    referer: OpenRouterConfig.REFERER,
   },
   // OpenAI
   openai: {
