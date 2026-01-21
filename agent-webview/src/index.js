@@ -219,21 +219,24 @@ class AgentWebViewInstance {
 // 创建全局实例
 const agentWebView = new AgentWebViewInstance();
 
-// 导出供模块化使用和 IIFE 格式
-// 注意：在 IIFE 格式下，这个 default export 会被 Rollup 赋值给 window.AgentWebView
+// 先导入所有需要附加到 agentWebView 的导出
+import * as A2ASDKBrowser from './a2a-sdk-browser/index.js';
+import * as Testing from './testing/index.js';
+
+// 将所有导出作为 agentWebView 的静态属性
+// 这样在 IIFE 格式中，window.AgentWebView 既是实例又有所有其他导出
+agentWebView.agentWebView = agentWebView;  // 为了保持一致性
+agentWebView.AgentWebViewInstance = AgentWebViewInstance;
+agentWebView.configManager = configManager;
+agentWebView.agentMessageBus = agentMessageBus;
+agentWebView.A2UI_EXTENSION_URL = A2UI_EXTENSION_URL;
+
+// 附加 A2A SDK 浏览器适配层的所有导出
+Object.assign(agentWebView, A2ASDKBrowser);
+
+// 附加测试工具的所有导出
+Object.assign(agentWebView, Testing);
+
+// 只导出 agentWebView 作为默认导出
+// 在 IIFE 格式下配合 exports: 'default'，window.AgentWebView 将直接是这个实例
 export default agentWebView;
-
-// 命名导出
-export {
-    agentWebView,
-    AgentWebViewInstance,
-    configManager,
-    agentMessageBus,
-    A2UI_EXTENSION_URL
-};
-
-// 导出 A2A SDK 浏览器适配层
-export * from './a2a-sdk-browser/index.js';
-
-// 导出测试工具
-export * from './testing/index.js';

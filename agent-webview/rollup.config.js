@@ -24,7 +24,7 @@ export default [
             name: 'AgentWebView',
             sourcemap: true,
             inlineDynamicImports: true,  // 将动态导入内联到主 bundle
-            exports: 'named'  // 使用命名导出
+            exports: 'default'  // 只导出默认导出，使 window.AgentWebView 直接是实例
         },
         plugins
     },
