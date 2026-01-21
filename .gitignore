@@ -150,3 +150,5 @@ agent/.idea/
 *pnpm-lock.yaml
 agent-js/pnpm-lock.yaml
 *uv.lock
+
+.wireit/
