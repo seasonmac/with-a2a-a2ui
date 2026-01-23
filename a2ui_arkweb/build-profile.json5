@@ -5,13 +5,13 @@
         "name": "default",
         "type": "HarmonyOS",
         "material": {
-          "certpath": "C:/Users/袁玮鸿/.ohos/config/default_GenUI_iWKuK0SivNFdsT4EJwGlQwTmZrUWSoajxyLZZT_Idro=.cer",
+          "certpath": "/Users/season/.ohos/config/default_a2ui_arkweb_j81zsST7rio5FhAVFCBNA6xp_7uFuZsvpAo1jReKKOs=.cer",
           "keyAlias": "debugKey",
-          "keyPassword": "0000001A52E4D6D060449CC83083903006EB955A6854E75140F2FAF7B14604ABF7480283C408ED71ABFF",
-          "profile": "C:/Users/袁玮鸿/.ohos/config/default_GenUI_iWKuK0SivNFdsT4EJwGlQwTmZrUWSoajxyLZZT_Idro=.p7b",
+          "keyPassword": "0000001AFD9FA4518F828468F3EB01A793DE6A9E610D2AD4A6E0B226BDDF2413ACB96AEAE9BB8F5C45E6",
+          "profile": "/Users/season/.ohos/config/default_a2ui_arkweb_j81zsST7rio5FhAVFCBNA6xp_7uFuZsvpAo1jReKKOs=.p7b",
           "signAlg": "SHA256withECDSA",
-          "storeFile": "C:/Users/袁玮鸿/.ohos/config/default_GenUI_iWKuK0SivNFdsT4EJwGlQwTmZrUWSoajxyLZZT_Idro=.p12",
-          "storePassword": "0000001AEA719EBC6D0EF9E35FD281DA9626644F7CB1FF50B6139420E2E008E3AF5E9339D0740CD1CD56"
+          "storeFile": "/Users/season/.ohos/config/default_a2ui_arkweb_j81zsST7rio5FhAVFCBNA6xp_7uFuZsvpAo1jReKKOs=.p12",
+          "storePassword": "0000001A830FCE2FA48F5EEC7015EAEB3020D177369AD8F03EBA790CECD7B8636F9BA452A604C8CE2DB4"
         }
       }
     ],
@@ -19,8 +19,8 @@
       {
         "name": "default",
         "signingConfig": "default",
-        "targetSdkVersion": "6.0.1(21)",
-        "compatibleSdkVersion": "6.0.1(21)",
+        "targetSdkVersion": "6.0.0(20)",
+        "compatibleSdkVersion": "6.0.0(20)",
         "runtimeOS": "HarmonyOS",
         "buildOption": {
           "strictMode": {

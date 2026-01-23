@@ -11,6 +11,10 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "microphone_label",
+      "value": "用于语音识别功能"
     }
   ]
 }

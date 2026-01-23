@@ -1,5 +1,4 @@
 // Index.ets
-import { A2ARestaurantOfficialHandler } from './A2Ainterceptor';
 import {A2UIInArkWeb} from './A2UIInArkweb'
 
 @Entry
