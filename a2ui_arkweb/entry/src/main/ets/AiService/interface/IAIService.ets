@@ -1,3 +1,5 @@
+import { common } from "@kit.AbilityKit";
+
 export interface IAIService {
-  speechToText(audioFilePath: string):Promise<String>;
+  speechToText(audioFilePath: string,  context:common.Context):Promise<string>;
 }

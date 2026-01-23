@@ -7,12 +7,12 @@ export enum AIType {
 }
 
 export class AIServiceFactory {
-  public static create(type:AIType) :IAIService| null {
+  public static create(type:AIType) :IAIService {
     switch (type) {
       case AIType.DOUBAO :
         return new DoubaoAIService();
-      case AIType.GEMINI:
-          return null;
+      default :
+        return new DoubaoAIService();
     }
   }
 
