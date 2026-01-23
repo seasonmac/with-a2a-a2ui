@@ -1,4 +1,4 @@
-import { AbilityConstant, ConfigurationConstant, UIAbility, Want } from '@kit.AbilityKit';
+import { abilityAccessCtrl, AbilityConstant, ConfigurationConstant, UIAbility, Want } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { window } from '@kit.ArkUI';
 import { RawFileReader } from '../utils/RawFileReaders';
@@ -28,6 +28,7 @@ export default class EntryAbility extends UIAbility {
         hilog.error(DOMAIN, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err));
         return;
       }
+      this.requestMic();
       hilog.info(DOMAIN, 'testTag', 'Succeeded in loading the content.');
     });
   }
@@ -45,5 +46,21 @@ export default class EntryAbility extends UIAbility {
   onBackground(): void {
     // Ability has back to background
     hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onBackground');
+  }
+
+  private async requestMic(): Promise<void> {
+    try {
+      const atManager = abilityAccessCtrl.createAtManager();
+      const grantStatus = await atManager.requestPermissionsFromUser(
+        this.context,          // UIAbility 的上下文
+        ['ohos.permission.MICROPHONE']
+      );
+      const isGranted = grantStatus.authResults[0] === abilityAccessCtrl.GrantStatus.PERMISSION_GRANTED;
+      console.info('麦克风授权结果:', isGranted);
+      // 把结果存到 AppStorage，方便页面读取
+      AppStorage.Set('micAuth', isGranted);
+    } catch (err) {
+      console.error('申请麦克风权限失败:', err);
+    }
   }
 }

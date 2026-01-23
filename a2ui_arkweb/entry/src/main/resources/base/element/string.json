@@ -13,8 +13,12 @@
       "value": "label"
     },
     {
-      "name": "microphone_label",
-      "value": "用于语音识别功能"
+      "name": "mic_reason",
+      "value": "需要录制语音以便在网页内完成语音搜索"
+    },
+    {
+      "name": "location_reason",
+      "value": "nearby"
     }
   ]
 }
